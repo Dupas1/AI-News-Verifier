@@ -27,6 +27,9 @@ venv/
 env/
 node_modules/
 node_modules
+.vscode
+vscode/
+backup_banco.sql
 # instance/
 # .pytest_cache/
 # .coverage

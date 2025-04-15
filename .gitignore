@@ -14,7 +14,7 @@
 # *.local
 
 # # Python
-# __pycache__/
+__pycache__/
 # *.py[cod]
 # *.sqlite3
 # *.db
@@ -25,6 +25,8 @@
 .venv/
 venv/
 env/
+node_modules/
+node_modules
 # instance/
 # .pytest_cache/
 # .coverage

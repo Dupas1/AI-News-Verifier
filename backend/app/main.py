@@ -2,6 +2,13 @@ import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+root_path = Path(__file__).resolve()
+while root_path.name != "AI-News-Verifier":
+    root_path = root_path.parent
+load_dotenv(dotenv_path=root_path / ".env")
 
 app = FastAPI()
 
@@ -26,8 +33,8 @@ def verificar_noticia(request: NewsVerificationRequest):
         raise HTTPException(status_code=400, detail="O título é obrigatório.")
 
     # Configurações da API do Google
-    GOOGLE_API_KEY = "AIzaSyBugox9DEdXBud0sNeaXvC4szYp9QjS-Vc"
-    GOOGLE_CSE_ID = "e300f1aad2deb48c2"
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
     GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
 
     # Fazer a requisição para a API do Google

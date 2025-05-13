@@ -2,7 +2,7 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from pathlib import Path
-load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / '.env')
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / '.env')
 
 
 def db_connection():

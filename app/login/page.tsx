@@ -1,10 +1,44 @@
+'use client';
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft } from "lucide-react"
+import { useState } from "react"
 
 export default function Login() {
+  // States para armazenar os valores de email e senha
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+
+  // Função para enviar dados para o back-end
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const response = await fetch("http://127.0.0.1:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Caso o login seja bem-sucedido, você pode redirecionar ou armazenar o token de autenticação
+        alert("Login bem-sucedido")
+        console.log(data)  // Aqui você pode armazenar dados do usuário, como o token
+      } else {
+        setError(data.error)  // Caso de erro, exibe mensagem de erro
+      }
+    } catch (err) {
+      setError("Erro ao se conectar com o servidor")
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-sm max-w-md w-full">
@@ -28,7 +62,7 @@ export default function Login() {
         <h1 className="text-xl font-bold mb-6 text-center text-[#000000]">Login</h1>
 
         {/* Formulário de login */}
-        <div className="space-y-4 mb-6">
+        <form onSubmit={handleLogin} className="space-y-4 mb-6">
           {/* Campo de email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-[#555555] mb-1">
@@ -38,6 +72,8 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Digite seu Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border-[#d0d5dd] border rounded-md"
             />
           </div>
@@ -57,6 +93,8 @@ export default function Login() {
                 id="password"
                 type="password"
                 placeholder="Digite sua senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full border-[#d0d5dd] border rounded-md pr-10"
               />
               {/* Botão para mostrar/ocultar senha */}
@@ -78,10 +116,15 @@ export default function Login() {
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Botão de login */}
-        <Button className="w-full bg-[#1570ef] hover:bg-[#1570ef]/90 text-white font-medium py-2.5 mb-4">Entrar</Button>
+          {/* Exibição de erros */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+          {/* Botão de login */}
+          <Button className="w-full bg-[#1570ef] hover:bg-[#1570ef]/90 text-white font-medium py-2.5 mb-4">
+            Entrar
+          </Button>
+        </form>
 
         {/* Botão de login com Google */}
         <Button

@@ -1,12 +1,42 @@
-import Navbar from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { AlertTriangle, FileText } from "lucide-react"
+"use client";
+
+import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { AlertTriangle, FileText } from "lucide-react";
+import { useState } from "react";
 
 export default function VerificarPage() {
+  const [title, setTitle] = useState("");
+  const [response, setResponse] = useState<null | { message: string; [key: string]: any }>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/verificar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title }), // Enviando apenas o título
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Erro ao verificar a notícia");
+      }
+
+      const data = await res.json();
+      setResponse({ success: true, ...data });
+    } catch (error: any) {
+      console.error("Erro ao verificar a notícia:", error);
+      setResponse({ success: false, message: error.message });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -21,7 +51,7 @@ export default function VerificarPage() {
 
           <Card>
             <CardContent className="pt-6">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   <div className="w-full">
                     <div className="flex items-center gap-2 mb-8 text-lg font-medium">
@@ -34,28 +64,12 @@ export default function VerificarPage() {
                     <Label htmlFor="news-title" className="text-base">
                       Título da Notícia
                     </Label>
-                    <Input id="news-title" placeholder="Digite o título da notícia" className="w-full mt-1" />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="news-content" className="text-base">
-                      Conteúdo da Notícia
-                    </Label>
-                    <Textarea
-                      id="news-content"
-                      placeholder="Cole aqui o texto completo da notícia que deseja verificar"
-                      className="w-full min-h-[200px] mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="news-source" className="text-base">
-                      Fonte (opcional)
-                    </Label>
                     <Input
-                      id="news-source"
-                      placeholder="Digite a fonte da notícia (site, jornal, etc.)"
+                      id="news-title"
+                      placeholder="Digite o título da notícia"
                       className="w-full mt-1"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
                     />
                   </div>
                 </div>
@@ -74,69 +88,23 @@ export default function VerificarPage() {
                   Verificar Agora
                 </Button>
               </form>
+
+              {response && (
+                <div className="mt-6">
+                  <h2 className="text-xl font-bold">Resultado:</h2>
+                  <pre
+                    className={`bg-gray-100 p-4 rounded ${
+                      response.success ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {JSON.stringify(response, null, 2)}
+                  </pre>
+                </div>
+              )}
             </CardContent>
           </Card>
-
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-4">Dicas para Verificação</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Para melhores resultados</CardTitle>
-                  <CardDescription>Como obter uma análise mais precisa</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Forneça o texto completo da notícia, não apenas trechos</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Inclua a fonte original, se possível</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Verifique se o texto está livre de erros de formatação</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Inclua o título original da notícia para melhor contexto</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Limitações</CardTitle>
-                  <CardDescription>O que nossa ferramenta não consegue fazer</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Verificar notícias muito recentes (menos de 1 hora)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Analisar conteúdo em idiomas não suportados</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Verificar com 100% de precisão - sempre use múltiplas fontes</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span>Analisar conteúdo satírico ou humorístico com precisão</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
         </div>
       </div>
     </>
-  )
+  );
 }

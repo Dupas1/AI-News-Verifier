@@ -1,13 +1,50 @@
-import Navbar from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowRight, CheckCircle, Shield, Zap } from "lucide-react"
+"use client";
+
+import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, CheckCircle, Shield, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+  const [title, setTitle] = useState(""); // Estado para o título da notícia
+  const [response, setResponse] = useState<null | { message: string; [key: string]: any }>(null); // Estado para a resposta da API
+
+  // Garantir que o componente seja renderizado apenas no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Função para lidar com o envio do formulário
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/verificar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title }), // Enviando apenas o título
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Erro ao verificar a notícia");
+      }
+
+      const data = await res.json();
+      setResponse({ success: true, ...data });
+    } catch (error: any) {
+      console.error("Erro ao verificar a notícia:", error);
+      setResponse({ success: false, message: error.message });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -56,35 +93,37 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto verification-form">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Verificação Rápida</h2>
-            <div className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="news-title" className="block text-sm font-medium text-gray-700 mb-1">
                   Título da Notícia
                 </label>
-                <Input id="news-title" placeholder="Digite o título da notícia" className="w-full" />
-              </div>
-              <div>
-                <label htmlFor="news-content" className="block text-sm font-medium text-gray-700 mb-1">
-                  Conteúdo da Notícia
-                </label>
-                <Textarea
-                  id="news-content"
-                  placeholder="Cole aqui o texto da notícia que deseja verificar"
-                  className="w-full min-h-[150px]"
-                />
-              </div>
-              <div>
-                <label htmlFor="news-source" className="block text-sm font-medium text-gray-700 mb-1">
-                  Fonte (opcional)
-                </label>
                 <Input
-                  id="news-source"
-                  placeholder="Digite a fonte da notícia (site, jornal, etc.)"
+                  id="news-title"
+                  placeholder="Digite o título da notícia"
                   className="w-full"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)} // Atualizando o estado do título
                 />
               </div>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg">Verificar Agora</Button>
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg">
+                Verificar Agora
+              </Button>
+            </form>
+
+            {/* Exibindo a resposta da API */}
+            {response && (
+              <div className="mt-6">
+                <h2 className="text-xl font-bold">Resultado:</h2>
+                <pre
+                  className={`bg-gray-100 p-4 rounded ${
+                    response.success ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {JSON.stringify(response, null, 2)}
+                </pre>
             </div>
+            )}
           </div>
         </div>
       </section>
@@ -134,5 +173,5 @@ export default function Home() {
         </div>
       </section>
     </>
-  )
+  );
 }

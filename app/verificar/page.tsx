@@ -5,28 +5,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { AlertTriangle, FileText } from "lucide-react";
+import { AlertTriangle, FileText, CheckCircle, XCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function VerificarPage() {
   const [title, setTitle] = useState("");
-  const [response, setResponse] = useState<null | { message: string; [key: string]: any }>(null);
+  const [response, setResponse] = useState<null | { success: boolean; message: string; classificacao?: string }>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/verificar", {
+      const res = await fetch("http://127.0.0.1:5000/api/v1/verificar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title }), // Enviando apenas o título
+        body: JSON.stringify({ title }),
       });
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.detail || "Erro ao verificar a notícia");
+        throw new Error(errorData.detail || errorData.error || "Erro ao verificar a notícia");
       }
 
       const data = await res.json();
@@ -35,6 +35,37 @@ export default function VerificarPage() {
       console.error("Erro ao verificar a notícia:", error);
       setResponse({ success: false, message: error.message });
     }
+  };
+
+  const renderResultado = () => {
+    if (!response) return null;
+
+    if (!response.success) {
+      return (
+        <div className="mt-6 text-red-600 border border-red-200 bg-red-50 rounded p-4">
+          <XCircle className="inline-block mr-2" />
+          <strong>Erro:</strong> {response.message}
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-6 border border-gray-200 bg-gray-50 rounded p-4">
+        <h2 className="text-xl font-bold mb-2">Resultado da Verificação</h2>
+        <div
+          className={`text-lg font-semibold ${
+            response.classificacao === "fake" ? "text-red-600" :
+            response.classificacao === "real" ? "text-green-600" :
+            "text-gray-600"
+          }`}
+        >
+          {response.classificacao === "fake" && <>🚨 Notícia possivelmente <strong>FALSA</strong>.</>}
+          {response.classificacao === "real" && <>✅ Notícia aparentemente <strong>VERDADEIRA</strong>.</>}
+          {response.classificacao === "indefinido" && <>❓ Resultado <strong>inconclusivo</strong>.</>}
+        </div>
+        <p className="mt-2 text-gray-600">{response.message}</p>
+      </div>
+    );
   };
 
   return (
@@ -89,18 +120,7 @@ export default function VerificarPage() {
                 </Button>
               </form>
 
-              {response && (
-                <div className="mt-6">
-                  <h2 className="text-xl font-bold">Resultado:</h2>
-                  <pre
-                    className={`bg-gray-100 p-4 rounded ${
-                      response.success ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {JSON.stringify(response, null, 2)}
-                  </pre>
-                </div>
-              )}
+              {renderResultado()}
             </CardContent>
           </Card>
         </div>

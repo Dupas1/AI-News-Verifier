@@ -1,3 +1,5 @@
+// app/login/page.tsx
+
 'use client';
 
 import Image from "next/image"
@@ -9,38 +11,47 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 export default function Login() {
-  const router = useRouter()  // Hook para navegação
+  const router = useRouter()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const response = await fetch("http://127.0.0.1:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      })
+  e.preventDefault();
+  try {
+    const response = await fetch("http://127.0.0.1:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json()
+    const data = await response.json();
 
-      if (response.ok) {
-        alert("Login bem-sucedido")
-        console.log(data)
+    if (response.ok) {
+      alert("Login bem-sucedido");
+      console.log(data);
 
-        // Redireciona para a página /verificar
-        router.push("/verificar")
-      } else {
-        setError(data.error)
+      // === MUDANÇA AQUI: ARMAZENAR USER ID E USER NAME ===
+      if (data.user && data.user.id && data.user.name) { // Verifica se 'name' existe
+        localStorage.setItem('userId', data.user.id.toString());
+        localStorage.setItem('userName', data.user.name); // Salva o nome do usuário
       }
-    } catch (err) {
-      setError("Erro ao se conectar com o servidor")
+      // ===================================================
+      
+      setTimeout(() => {
+        router.push("/verificar");
+      }, 100);
+
+    } else {
+      setError(data.error);
     }
+  } catch (err) {
+    setError("Erro ao se conectar com o servidor");
   }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -174,5 +185,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }

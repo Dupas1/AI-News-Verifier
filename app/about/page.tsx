@@ -32,7 +32,7 @@ export default function AboutPage() {
               permite verificar a autenticidade e confiabilidade de notícias de forma rápida e acessível.
             </p>
             <p className="text-lg text-gray-700 mb-6">
-              Nossa equipe é composta por especialistas em tecnologia, jornalismo e ciência de dados, unidos pelo
+              Nossa equipe é composta por especialistas em tecnologia e ciência de dados, unidos pelo
               objetivo comum de promover o acesso à informação de qualidade e fortalecer o pensamento crítico.
             </p>
             <div className="flex justify-center mb-12">
@@ -81,10 +81,9 @@ export default function AboutPage() {
                 <div className="bg-blue-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                   <CheckCircle className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">Resultado Detalhado</h3>
+                <h3 className="text-xl font-bold mb-3">Resultado</h3>
                 <p className="text-gray-600">
-                  Fornecemos um relatório completo com índice de confiança, verificações específicas e explicações
-                  detalhadas sobre a análise.
+                      Receba um resultado dizendo se sua notícia é verdadeira ou falsa.
                 </p>
               </CardContent>
             </Card>

@@ -76,8 +76,9 @@ export default function VerificarPage() {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 text-center">Verificar Notícia</h1>
           <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-            Utilize nossa tecnologia de inteligência artificial para verificar a autenticidade e confiabilidade de
-            notícias.
+            Verifique sua notícia gratuitamente usando nossa tecnologia de inteligência artificial.
+            <br />
+            <span className="font-medium text-primary">Faça login e tenha acesso ao seu histórico de verificações.</span>
           </p>
 
           <Card>

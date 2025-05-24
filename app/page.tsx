@@ -49,84 +49,48 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="hero-gradient text-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Verifique a autenticidade das notícias com Inteligência Artificial
-              </h1>
-              <p className="text-lg md:text-xl mb-8 text-blue-100">
-                Combata a desinformação com nossa tecnologia avançada que analisa e verifica a credibilidade de notícias
-                em segundos.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/verificar">
-                  <Button size="lg" className="bg-white text-primary hover:bg-blue-50 font-medium">
-                    Verificar Notícia
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/about">
-                  <Button size="lg" className="bg-blue-600 text-white hover:bg-blue-700 border border-white">
-                    Saiba Mais
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="hidden md:flex justify-center">
-              <Image
-                src="/robot-ai.png"
-                alt="AI analisando notícias"
-                width={500}
-                height={500}
-                className="animate-slide-up"
-              />
+    {/* Hero Section */}
+    <section className="hero-gradient text-white py-16 md:py-24">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="animate-fade-in">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Verifique a autenticidade das notícias com Inteligência Artificial
+            </h1>
+            <p className="text-lg md:text-xl mb-4 text-blue-100">
+              Combata a desinformação com nossa tecnologia avançada que analisa e verifica a credibilidade de notícias em segundos.
+            </p>
+            <p className="text-lg md:text-xl mb-8 text-blue-100">
+              Verifique sua notícia gratuitamente, ou faça login e tenha acesso ao seu histórico de pesquisas.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/verificar">
+                <Button size="lg" className="bg-white text-primary hover:bg-blue-50 font-medium">
+                  Verificar Notícia
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/about">
+                <Button size="lg" className="bg-blue-600 text-white hover:bg-blue-700 border border-white">
+                  Saiba Mais
+                </Button>
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Verificação Rápida Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto verification-form">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Verificação Rápida</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="news-title" className="block text-sm font-medium text-gray-700 mb-1">
-                  Título da Notícia
-                </label>
-                <Input
-                  id="news-title"
-                  placeholder="Digite o título da notícia"
-                  className="w-full"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)} // Atualizando o estado do título
-                />
-              </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg">
-                Verificar Agora
-              </Button>
-            </form>
-
-            {/* Exibindo a resposta da API */}
-            {response && (
-              <div className="mt-6">
-                <h2 className="text-xl font-bold">Resultado:</h2>
-                <pre
-                  className={`bg-gray-100 p-4 rounded ${
-                    response.success ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {JSON.stringify(response, null, 2)}
-                </pre>
-            </div>
-            )}
+          <div className="hidden md:flex justify-center">
+            <Image
+              src="/robot-ai.png"
+              alt="AI analisando notícias"
+              width={500}
+              height={500}
+              className="animate-slide-up"
+            />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+
+
 
       {/* Como Funciona Section */}
       <section className="py-16">
@@ -162,10 +126,9 @@ export default function Home() {
                 <div className="bg-blue-100 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                   <CheckCircle className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">3. Resultado Detalhado</h3>
+                <h3 className="text-xl font-bold mb-3">3. Resultado </h3>
                 <p className="text-gray-600">
-                  Receba um relatório completo sobre a credibilidade da notícia, com um índice de confiança e
-                  explicações detalhadas sobre a análise.
+                  Receba um resultado dizendo se sua notícia é verdadeira ou falsa.
                 </p>
               </CardContent>
             </Card>

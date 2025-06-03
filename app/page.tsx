@@ -61,7 +61,7 @@ export default function Home() {
               Combata a desinformação com nossa tecnologia avançada que analisa e verifica a credibilidade de notícias em segundos.
             </p>
             <p className="text-lg md:text-xl mb-8 text-blue-100">
-              Verifique sua notícia gratuitamente, ou faça login e tenha acesso ao seu histórico de pesquisas.
+              Verifique sua notícia ,faça login e tenha acesso ao seu histórico de pesquisas.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/verificar">

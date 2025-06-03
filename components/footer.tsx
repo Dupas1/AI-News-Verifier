@@ -42,8 +42,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 3 - Legal */}
-          <div>
+          {/* <div>
             <h3 className="font-bold text-gray-800 mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
@@ -62,10 +61,9 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
-          {/* Coluna 4 - Contato */}
-          <div>
+          {/* <div>
             <h3 className="font-bold text-gray-800 mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
@@ -81,7 +79,7 @@ export default function Footer() {
               <li className="flex space-x-4 mt-4">
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Copyright */}

@@ -77,15 +77,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="hidden md:flex justify-center">
-            <Image
-              src="/robot-ai.png"
-              alt="AI analisando notícias"
-              width={500}
-              height={500}
-              className="animate-slide-up"
-            />
-          </div>
         </div>
       </div>
     </section>

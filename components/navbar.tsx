@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { useRouter } from 'next/navigation';
+import logo from '../styles/logo.png';
 
 export default function Navbar() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo e nome do aplicativo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="AI News Verifier Logo" width={40} height={40} priority />
+            <Image src={logo} alt="AI News Verifier Logo" width={80} height={80} priority />
             <span className="font-bold text-gray-900 text-xl hidden sm:inline-block">AI News Verifier</span>
           </Link>
 
@@ -75,11 +76,11 @@ export default function Navbar() {
                   Sobre
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/contato" className="text-gray-700 hover:text-primary font-medium">
                   Contato
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </nav>
 

@@ -1,28 +1,54 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# Node.js dependencies
+# Ignora a pasta node_modules em qualquer lugar do projeto
+node_modules/
 
-# next.js
-/.next/
-/out/
+# pnpm store (se você usa pnpm, ele pode criar um cache global ou na raiz do projeto)
+.pnpm-store/
 
-# production
-/build
+# Next.js build outputs and caches
+.next/
+out/
+.vercel/ # Vercel specific files
+*.tsbuildinfo # TypeScript build info
 
-# debug
+# Python virtual environments and caches
+# Ignora pastas .venv ou venv em qualquer nível do projeto
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# IDEs and Editors (useful to add common ones)
+.vscode/ # VS Code settings specific to your machine (optional, but often ignored)
+.idea/   # IntelliJ IDEA / PyCharm
+
+# Environment variables files (crucial for security)
+# Ignora todos os arquivos .env em qualquer nível
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local 
+# Para variações customizadas
+
+# Logs and debug files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
+*.sqlite3 # Se você usa SQLite para desenvolvimento, evite versionar o DB
 
-# env files
-.env*
-.env
+# Build output (geral)
+/build/ # Para qualquer pasta 'build' que possa ser gerada
+/dist/  # Outro nome comum para pasta de build/distribuição
 
-# vercel
-.vercel
+# Outros arquivos temporários ou gerados
+uv.lock # Se uv é um gerenciador de pacotes que gera lockfiles que não devem ser versionados (geralmente não deve ser ignorado se usado para reprodutibilidade)
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# TypeScript declaration files (geralmente gerados, mas next-env.d.ts é importante para o Next.js)
+# next-env.d.ts # Geralmente é versionado pelo Next.js. Se for gerado e não versionado, mantenha.node_modules/
+.pnpm-store/
